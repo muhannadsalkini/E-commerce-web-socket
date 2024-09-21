@@ -5,7 +5,7 @@ const app = express();
 const port = 3000;
 
 mongoose
-  .connect("mongodb://localhost:27017")
+  .connect("mongodb://localhost:27017/WebSocket")
   .then(() => {
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
