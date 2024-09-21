@@ -1,0 +1,10 @@
+node_modules
+build
+.env.prod
+.vscode
+app.log
+cliTools/*.json
+cliTools/*.xlsx
+cliTools/*.csv
+
+coverage
