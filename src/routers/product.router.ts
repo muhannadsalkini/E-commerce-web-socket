@@ -7,14 +7,19 @@ import {
   searchProduct,
   deleteProduct,
 } from "../controllers/product.controller";
+import {
+  createProductValidator,
+  updateProductValidator,
+  getSingleProductValidator,
+} from "../middlewares/validators/product.validator";
 
 const router = Router();
 
-router.post("/", createProduct);
-router.patch("/:id", updateProduct);
-router.get("/:id", getSingleProduct);
+router.post("/", createProductValidator, createProduct);
+router.patch("/:id", updateProductValidator, updateProduct);
+router.get("/:id", getSingleProductValidator, getSingleProduct);
 router.get("/", getAllProducts);
 router.get("/search", searchProduct);
-router.delete("/:id", deleteProduct);
+router.delete("/:id", getSingleProductValidator, deleteProduct);
 
 export default router;
