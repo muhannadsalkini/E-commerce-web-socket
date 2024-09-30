@@ -17,9 +17,9 @@ const router = Router();
 
 router.post("/", createProductValidator, createProduct);
 router.patch("/:id", updateProductValidator, updateProduct);
-router.get("/:id", getSingleProductValidator, getSingleProduct);
-router.get("/", getAllProducts);
+router.get("/list", getAllProducts);
 router.get("/search", searchProduct);
+router.get("/:id", getSingleProductValidator, getSingleProduct);
 router.delete("/:id", getSingleProductValidator, deleteProduct);
 
 export default router;
