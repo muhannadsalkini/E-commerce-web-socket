@@ -50,9 +50,9 @@ export const getSingleProduct = async (req: Request, res: Response) => {
 
 export const getAllProducts = async (req: Request, res: Response) => {
   try {
-    const { category, brand } = req.query;
+    const { category, brand, page = 1, limit = 20 } = req.query;
 
-    const query = {};
+    const query: any = {};
     if (category) {
       query["category"] = category;
     }
@@ -60,8 +60,21 @@ export const getAllProducts = async (req: Request, res: Response) => {
       query["brand"] = brand;
     }
 
-    const products = await Product.find(query);
-    res.status(200).json({ message: "Products found successfully", products });
+    // Get the total count of products that match the query
+    const totalProducts = await Product.countDocuments(query);
+
+    // Fetch the products with pagination
+    const products = await Product.find(query)
+      .limit(Number(limit)) // Limit the number of results
+      .skip((Number(page) - 1) * Number(limit)); // Skip results based on the current page
+
+    res.status(200).json({
+      message: "Products found successfully",
+      products,
+      totalProducts,
+      totalPages: Math.ceil(totalProducts / Number(limit)),
+      currentPage: Number(page),
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -69,10 +82,29 @@ export const getAllProducts = async (req: Request, res: Response) => {
 
 export const searchProduct = async (req: Request, res: Response) => {
   try {
-    const { keyword } = req.query;
-    const products = await Product.find({ $text: { $search: keyword } });
+    const { keyword, page = 1, limit = 20 } = req.query;
 
-    res.status(200).json({ message: "Products found successfully", products });
+    if (!keyword) {
+      return res
+        .status(400)
+        .json({ message: "Keyword is required for search." });
+    }
+
+    const searchQuery = { name: { $regex: keyword, $options: "i" } }; // Case-insensitive search
+
+    const products = await Product.find(searchQuery)
+      .limit(Number(limit))
+      .skip((Number(page) - 1) * Number(limit));
+
+    const totalProducts = await Product.countDocuments(searchQuery); // Get total products matching the search
+
+    res.status(200).json({
+      message: "Products found successfully",
+      products,
+      totalProducts,
+      totalPages: Math.ceil(totalProducts / Number(limit)),
+      currentPage: Number(page),
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
