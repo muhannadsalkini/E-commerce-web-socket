@@ -12,14 +12,15 @@ import {
   updateProductValidator,
   getSingleProductValidator,
 } from "../middlewares/validators/product.validator";
+import { auth } from "../middlewares/auth.middleware";
 
 const router = Router();
 
-router.post("/", createProductValidator, createProduct);
-router.patch("/:id", updateProductValidator, updateProduct);
+router.post("/", auth, createProductValidator, createProduct);
+router.patch("/:id", auth, updateProductValidator, updateProduct);
 router.get("/list", getAllProducts);
 router.get("/search", searchProduct);
 router.get("/:id", getSingleProductValidator, getSingleProduct);
-router.delete("/:id", getSingleProductValidator, deleteProduct);
+router.delete("/:id", auth, getSingleProductValidator, deleteProduct);
 
 export default router;

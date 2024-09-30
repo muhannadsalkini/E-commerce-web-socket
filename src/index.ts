@@ -11,7 +11,7 @@ app.use(express.json());
 const port = process.env.PORT || 3000;
 
 mongoose
-  .connect("mongodb://localhost:27017/WebSocket")
+  .connect(process.env.MONGODB_URL)
   .then(() => {
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
