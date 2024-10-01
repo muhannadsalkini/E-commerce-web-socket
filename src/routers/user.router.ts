@@ -5,12 +5,19 @@ import {
   getAllUsers,
   deleteUser,
 } from "../controllers/user.controller";
+import {
+  validateCreateUser,
+  validateUpdateUser,
+  validateGetUserById,
+} from "../middlewares/validators/user.validator";
+import { auth } from "../middlewares/auth.middleware";
 
 const router = Router();
 
+router.post("/", auth, validateCreateUser, getAllUsers);
 router.get("/list", getAllUsers);
-router.get("/:id", getUserById);
-router.patch("/:id", updateUser);
-router.delete("/:id", deleteUser);
+router.get("/:id", validateGetUserById, getUserById);
+router.patch("/:id", validateUpdateUser, updateUser);
+router.delete("/:id", validateGetUserById, deleteUser);
 
 export default router;

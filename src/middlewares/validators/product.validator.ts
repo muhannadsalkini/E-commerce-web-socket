@@ -1,5 +1,4 @@
 import { body, param, query, validationResult } from "express-validator";
-
 import { Request, Response, NextFunction } from "express";
 
 // Validation rules for creating a product
