@@ -16,17 +16,20 @@ import {
   createProductValidator,
   updateProductValidator,
   getSingleProductValidator,
+  createVariantValidator,
+  updateVariantValidator,
+  getVariantValidator,
 } from "../middlewares/validators/product.validator";
 import { auth } from "../middlewares/auth.middleware";
 
 const router = Router();
 
 // variant
-router.post("/variant", auth, createVariant);
-router.get("/variant/list/:id", getAllVariants); // Get all variants of a product
-router.get("/variant/:id", getVariantById);
-router.patch("/variant/:id", auth, updateVariant);
-router.delete("/variant/:id", auth, deleteVariant);
+router.post("/variant", auth, createVariantValidator, createVariant);
+router.get("/variant/list/:id", getVariantValidator, getAllVariants); // Get all variants of a product
+router.get("/variant/:id", getVariantValidator, getVariantById);
+router.patch("/variant/:id", auth, updateVariantValidator, updateVariant);
+router.delete("/variant/:id", auth, getVariantValidator, deleteVariant);
 
 // product
 router.post("/", auth, createProductValidator, createProduct);
