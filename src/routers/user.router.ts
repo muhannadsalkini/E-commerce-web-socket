@@ -17,7 +17,7 @@ const router = Router();
 router.post("/", auth, validateCreateUser, getAllUsers);
 router.get("/list", getAllUsers);
 router.get("/:id", validateGetUserById, getUserById);
-router.patch("/:id", validateUpdateUser, updateUser);
-router.delete("/:id", validateGetUserById, deleteUser);
+router.patch("/:id", auth, validateUpdateUser, updateUser);
+router.delete("/:id", auth, validateGetUserById, deleteUser);
 
 export default router;

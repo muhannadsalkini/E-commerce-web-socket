@@ -6,6 +6,11 @@ import {
   getAllProducts,
   searchProduct,
   deleteProduct,
+  createVariant,
+  getAllVariants,
+  getVariantById,
+  updateVariant,
+  deleteVariant,
 } from "../controllers/product.controller";
 import {
   createProductValidator,
@@ -16,6 +21,14 @@ import { auth } from "../middlewares/auth.middleware";
 
 const router = Router();
 
+// variant
+router.post("/variant", auth, createVariant);
+router.get("/variant/list/:id", getAllVariants); // Get all variants of a product
+router.get("/variant/:id", getVariantById);
+router.patch("/variant/:id", auth, updateVariant);
+router.delete("/variant/:id", auth, deleteVariant);
+
+// product
 router.post("/", auth, createProductValidator, createProduct);
 router.patch("/:id", auth, updateProductValidator, updateProduct);
 router.get("/list", getAllProducts);

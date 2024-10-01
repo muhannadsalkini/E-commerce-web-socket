@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Product } from "../models/product.model";
+import { Variant } from "../models/varient.model";
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
@@ -119,6 +120,101 @@ export const deleteProduct = async (req: Request, res: Response) => {
     }
 
     res.status(200).json({ message: "Product deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Variant
+
+// Create a new variant
+export const createVariant = async (req: Request, res: Response) => {
+  try {
+    const { productId } = req.body;
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    const variantData = req.body;
+    const newVariant = new Variant(variantData);
+    const savedVariant = await newVariant.save();
+
+    res
+      .status(201)
+      .json({ message: "Variant created successfully", savedVariant });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Get all variants of a product
+export const getAllVariants = async (req: Request, res: Response) => {
+  try {
+    const productId = req.params.id;
+    console.log(productId);
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    const variants = await Variant.find({ productId });
+    if (!variants) {
+      return res.status(404).json({ message: "Variant not found" });
+    }
+
+    res.status(200).json({ message: "Variants found successfully", variants });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Get a single variant by ID
+export const getVariantById = async (req: Request, res: Response) => {
+  try {
+    const variant = await Variant.findById(req.params.id);
+
+    if (!variant) {
+      return res.status(404).json({ message: "Variant not found" });
+    }
+
+    res.status(200).json({ message: "Variant found", variant });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Update a variant by ID
+export const updateVariant = async (req: Request, res: Response) => {
+  try {
+    const updatedVariant = await Variant.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true } // Return the updated variant
+    );
+
+    if (!updatedVariant) {
+      return res.status(404).json({ message: "Variant not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Variant updated successfully", updatedVariant });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Delete a variant by ID
+export const deleteVariant = async (req: Request, res: Response) => {
+  try {
+    const deletedVariant = await Variant.findByIdAndDelete(req.params.id);
+
+    if (!deletedVariant) {
+      return res.status(404).json({ message: "Variant not found" });
+    }
+
+    res.status(200).json({ message: "Variant deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
