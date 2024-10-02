@@ -1,10 +1,6 @@
-Here's an example of a detailed `README.md` file for your project, covering setup, usage, and functionality.
+# **E-commerce-web-socket**
 
----
-
-# **Wavy Threads Backend API**
-
-This project is a backend API built with **Node.js**, **Express**, and **MongoDB** for the e-commerce platform **Wavy Threads**. The API provides functionality for user management, product and variant handling, orders, and live updates, with authentication and role-based access control.
+This project is a backend API built with **Node.js**, **Express**, and **MongoDB** for an e-commerce platform. The API provides functionality for user management, product and variant handling, orders, and live updates, with authentication and role-based access control.
 
 ## **Table of Contents**
 
@@ -27,7 +23,7 @@ This project is a backend API built with **Node.js**, **Express**, and **MongoDB
 
 ## **Project Overview**
 
-Wavy Threads is an e-commerce platform for clothing, targeting young and middle-aged audiences. This backend API handles operations such as user authentication, product management, and order processing. It is designed to be scalable and secure, with features like JWT-based authentication and Express-validator for input validation.
+This backend API handles operations such as user authentication, product management, and order processing. It is designed to be scalable and secure, with features like JWT-based authentication and Express-validator for input validation.
 
 ## **Features**
 
@@ -62,13 +58,13 @@ Wavy Threads is an e-commerce platform for clothing, targeting young and middle-
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/username/wavy-threads-backend.git
+   git clone https://github.com/username/E-commerce-web-socket
    ```
 
 2. **Navigate into the project directory**:
 
    ```bash
-   cd wavy-threads-backend
+   cd E-commerce-web-socket
    ```
 
 3. **Install dependencies**:
@@ -85,7 +81,7 @@ Make sure to configure your environment variables. Create a `.env` file in the r
 
 ```bash
 PORT=5000
-MONGO_URI=mongodb://localhost:27017/wavy_threads
+MONGO_URI=mongodb://localhost:27017/E-commerce-web-socket
 JWT_SECRET=your_jwt_secret
 JWT_EXPIRES_IN=1h
 ```
@@ -172,7 +168,6 @@ Here are the planned features and improvements:
 
 ```plaintext
 // TODO: Add an error handle middleware
-// TODO: Add the order functionality
 // TODO: Add the ports functionality for the live orders
 // TODO: Add roles to the user
 // TODO: Add user basket functionality
