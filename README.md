@@ -219,10 +219,4 @@ We welcome contributions of any kind, including bug fixes, new features, or docu
 
 ---
 
-## **License**
-
-This project is licensed under the MIT License.
-
----
-
 Let me know if you need further details for any section!

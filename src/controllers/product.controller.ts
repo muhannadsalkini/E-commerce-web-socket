@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Product } from "../models/product.model";
-import { Variant } from "../models/varient.model";
+import { Variant } from "../models/variant.model";
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
