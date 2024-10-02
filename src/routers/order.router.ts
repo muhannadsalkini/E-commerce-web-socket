@@ -8,12 +8,18 @@ import {
   deleteOrder,
 } from "../controllers/order.controller";
 
+import {
+  placeOrderValidator,
+  updateOrderValidator,
+  getSingleOrderValidator,
+} from "../middlewares/validators/order.validator";
+
 const router = express.Router();
 
-router.post("/place", auth, placeOrder);
-router.put("/:id", auth, updateOrder);
+router.post("/place", auth, placeOrderValidator, placeOrder);
+router.patch("/:id", auth, updateOrderValidator, updateOrder);
 router.get("/", auth, getUserOrders);
-router.get("/:id", auth, getSingleOrder);
-router.delete("/:id", auth, deleteOrder);
+router.get("/:id", auth, getSingleOrderValidator, getSingleOrder);
+router.delete("/:id", auth, getSingleOrderValidator, deleteOrder);
 
 export default router;
