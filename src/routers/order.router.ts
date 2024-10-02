@@ -18,7 +18,7 @@ const router = express.Router();
 
 router.post("/place", auth, placeOrderValidator, placeOrder);
 router.patch("/:id", auth, updateOrderValidator, updateOrder);
-router.get("/", auth, getUserOrders);
+router.get("/list", auth, getUserOrders);
 router.get("/:id", auth, getSingleOrderValidator, getSingleOrder);
 router.delete("/:id", auth, getSingleOrderValidator, deleteOrder);
 

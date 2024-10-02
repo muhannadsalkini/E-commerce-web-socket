@@ -66,6 +66,7 @@ export const updateOrder = async (req: Request, res: Response) => {
 export const getUserOrders = async (req: Request, res: Response) => {
   try {
     const userId = req.userId;
+    const { status, page = 1, limit = 20 } = req.query;
 
     if (!userId) {
       return res.status(401).json({ message: "User ID not found in request" });
@@ -76,10 +77,24 @@ export const getUserOrders = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const userOrders = await Order.find({ userId }).populate("variants");
-    res
-      .status(200)
-      .json({ message: "Orders fetched successfully", userOrders });
+    const query: any = { userId };
+    if (status) {
+      query.status = status;
+    }
+
+    const userOrders = await Order.find(query)
+      .limit(Number(limit))
+      .skip((Number(page) - 1) * Number(limit))
+      .populate("variants");
+    const totalOrders = await Order.countDocuments(query);
+
+    res.status(200).json({
+      message: "Orders fetched successfully",
+      userOrders,
+      totalOrders,
+      totalPages: Math.ceil(totalOrders / Number(limit)),
+      currentPage: Number(page),
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -89,8 +104,10 @@ export const getUserOrders = async (req: Request, res: Response) => {
 export const getSingleOrder = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+    const userId = req.userId;
 
-    const order = await Order.findById(id).populate("variants");
+    const order = await Order.findOne({ _id: id, userId }).populate("variants");
+
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
