@@ -93,3 +93,69 @@ export const validateGetUserById = [
     next();
   },
 ];
+
+// Address
+export const addAddressValidator = [
+  body("name").notEmpty().withMessage("Name is required").isString(),
+  body("city").notEmpty().withMessage("City is required").isString(),
+  body("postcode").notEmpty().withMessage("Postcode is required").isString(),
+  body("street").notEmpty().withMessage("Street is required").isString(),
+  body("state").notEmpty().withMessage("State is required").isString(),
+  body("addressLine")
+    .notEmpty()
+    .withMessage("Address Line is required")
+    .isString(),
+  body("type")
+    .notEmpty()
+    .withMessage("Type is required")
+    .isIn(["Home", "Office", "Other"])
+    .withMessage("Type must be 'Home', 'Office', or 'Other'"),
+
+  async (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+];
+
+export const updateAddressValidator = [
+  param("id").isMongoId().withMessage("Invalid address ID"),
+  body("name").optional().isString().withMessage("Name must be a string"),
+  body("city").optional().isString().withMessage("City must be a string"),
+  body("postcode")
+    .optional()
+    .isString()
+    .withMessage("Postcode must be a string"),
+  body("street").optional().isString().withMessage("Street must be a string"),
+  body("state").optional().isString().withMessage("State must be a string"),
+  body("addressLine")
+    .optional()
+    .isString()
+    .withMessage("Address Line must be a string"),
+  body("type")
+    .optional()
+    .isIn(["Home", "Office", "Other"])
+    .withMessage("Type must be 'Home', 'Office', or 'Other'"),
+
+  async (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+];
+
+export const getAddressValidator = [
+  param("id").isMongoId().withMessage("Address ID must be a valid MongoDB ID."),
+
+  async (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+];

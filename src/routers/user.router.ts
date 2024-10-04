@@ -15,6 +15,9 @@ import {
   validateCreateUser,
   validateUpdateUser,
   validateGetUserById,
+  addAddressValidator,
+  updateAddressValidator,
+  getAddressValidator,
 } from "../middlewares/validators/user.validator";
 import { auth, isAdmin } from "../middlewares/auth.middleware";
 
@@ -27,10 +30,10 @@ router.patch("/:id", auth, validateUpdateUser, updateUser);
 router.delete("/:id", auth, isAdmin, validateGetUserById, deleteUser);
 
 // Address
-router.post("/address", auth, addAddress);
-router.get("/address/:id", auth, getAddress);
+router.post("/address", auth, addAddressValidator, addAddress);
+router.get("/address/:id", auth, getAddressValidator, getAddress);
 router.get("/address/list", auth, getAllAddresses);
-router.patch("/address/:id", auth, updateAddress);
-router.delete("/address/:id", auth, deleteAddress);
+router.patch("/address/:id", auth, updateAddressValidator, updateAddress);
+router.delete("/address/:id", auth, getAddressValidator, deleteAddress);
 
 export default router;
