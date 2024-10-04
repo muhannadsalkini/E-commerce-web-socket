@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Order } from "../models/order.model";
 import { Variant } from "../models/variant.model";
-import { User } from "../models/users.model";
+import { User } from "../models/user.model";
 
 // Place an order
 export const placeOrder = async (req: Request, res: Response) => {
