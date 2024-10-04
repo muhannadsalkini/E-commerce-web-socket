@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { User } from "../models/user.model";
 import bcrypt from "bcryptjs";
+import { Address } from "../models/address.model";
 
 // Create a new user
 export const createUser = async (req: Request, res: Response) => {
@@ -141,5 +142,124 @@ export const getAllUsers = async (req: Request, res: Response) => {
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+// Address
+
+// Create a new address
+export const addAddress = async (req: Request, res: Response) => {
+  try {
+    const { name, city, postcode, street, state, addressLine, type } = req.body;
+    const userId = req.userId;
+
+    const newAddress = new Address({
+      name,
+      city,
+      postcode,
+      street,
+      state,
+      addressLine,
+      type,
+      userId,
+    });
+
+    const savedAddress = await newAddress.save();
+    res
+      .status(201)
+      .json({ message: "Address added successfully", address: savedAddress });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to add address", error: error.message });
+  }
+};
+
+// Update an existing address
+export const updateAddress = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const userId = req.userId;
+    const updatedData = req.body;
+
+    // Check if the address belongs to the user
+    const address = await Address.findOne({ _id: id, userId });
+
+    if (!address) {
+      return res.status(404).json({ message: "Address not found" });
+    }
+
+    Object.assign(address, updatedData); // Update the address fields
+    const updatedAddress = await address.save();
+
+    res
+      .status(200)
+      .json({
+        message: "Address updated successfully",
+        address: updatedAddress,
+      });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to update address", error: error.message });
+  }
+};
+
+// Get a single address by its ID (owned by the current user)
+export const getAddress = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const userId = req.userId;
+
+    const address = await Address.findOne({ _id: id, userId });
+
+    if (!address) {
+      return res.status(404).json({ message: "Address not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Address retrieved successfully", address });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to retrieve address", error: error.message });
+  }
+};
+
+// Get all addresses for the current user
+export const getAllAddresses = async (req: Request, res: Response) => {
+  try {
+    const userId = req.userId;
+
+    const addresses = await Address.find({ userId });
+
+    res
+      .status(200)
+      .json({ message: "Addresses retrieved successfully", addresses });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to retrieve addresses", error: error.message });
+  }
+};
+
+// Delete an address by its ID (owned by the current user)
+export const deleteAddress = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const userId = req.userId;
+
+    const address = await Address.findOneAndDelete({ _id: id, userId });
+
+    if (!address) {
+      return res.status(404).json({ message: "Address not found" });
+    }
+
+    res.status(200).json({ message: "Address deleted successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to delete address", error: error.message });
   }
 };
