@@ -13,17 +13,22 @@ export interface IProduct {
   };
 }
 
-export const ProductSchema = new mongoose.Schema<IProduct>({
-  name: { type: String, required: true },
-  description: { type: String, required: true },
-  category: { type: String, required: true },
-  brand: { type: String, required: true },
-  weight: { type: Number },
-  dimensions: {
-    length: { type: Number },
-    width: { type: Number },
-    height: { type: Number },
+export const ProductSchema = new mongoose.Schema<IProduct>(
+  {
+    name: { type: String, required: true },
+    description: { type: String, required: true },
+    category: { type: String, required: true },
+    brand: { type: String, required: true },
+    weight: { type: Number },
+    dimensions: {
+      length: { type: Number },
+      width: { type: Number },
+      height: { type: Number },
+    },
   },
-});
+  {
+    timestamps: true,
+  }
+);
 
 export const Product = mongoose.model<IProduct>("Product", ProductSchema);
