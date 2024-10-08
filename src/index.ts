@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import router from "./routers/index";
 import Database from "./services/db.service";
+import { errorHandler } from "./middlewares/errorHandler.middleware";
 
 dotenv.config();
 
@@ -28,10 +29,7 @@ dbService
     process.exit(1); // Exit the process
   });
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(err);
-  res.status(500).json({ message: "Internal Server Error" });
-});
+app.use(errorHandler);
 
 // TODO: Implement the order functionality
 // TODO: Implement the ports functionality for the live orders
